@@ -27,22 +27,23 @@ export async function getInitialState(): Promise<{
 }> {
   const fetchUserInfo = async () => {
     try {
-      const msg = await queryCurrentUser();
-      return msg.data;
+      return await queryCurrentUser();
     } catch (error) {
       history.push(loginPath);
     }
     return undefined;
   };
-  // 如果不是登录页面，执行
+
   if (history.location.pathname !== loginPath) {
     const currentUser = await fetchUserInfo();
+
     return {
       fetchUserInfo,
       currentUser,
       settings: defaultSettings,
     };
   }
+
   return {
     fetchUserInfo,
     settings: defaultSettings,
@@ -81,7 +82,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
     // 自定义 403 页面
     // unAccessible: <div>unAccessible</div>,
     // 增加一个 loading 的状态
-    childrenRender: (children, props) => {
+    childrenRender: (children: any, props: any) => {
       // if (initialState?.loading) return <PageLoading />;
       return (
         <>

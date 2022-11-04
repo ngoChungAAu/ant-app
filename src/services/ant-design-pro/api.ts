@@ -1,28 +1,21 @@
 // @ts-ignore
 /* eslint-disable */
-import { request } from 'umi';
+import request from '../config';
 
-/** 获取当前的用户 GET /api/currentUser */
+/**GET get profile */
 export async function currentUser(options?: { [key: string]: any }) {
-  return request<{
-    data: API.CurrentUser;
-  }>('/api/currentUser', {
+  return request<API.CurrentUser>('/user/profile', {
     method: 'GET',
     ...(options || {}),
   });
 }
 
-/** 退出登录接口 POST /api/login/outLogin */
-export async function outLogin(options?: { [key: string]: any }) {
-  return request<Record<string, any>>('/api/login/outLogin', {
-    method: 'POST',
-    ...(options || {}),
-  });
-}
+/** POST logout */
+export async function outLogin(options?: { [key: string]: any }) {}
 
-/** 登录接口 POST /api/login/account */
+/** POST login */
 export async function login(body: API.LoginParams, options?: { [key: string]: any }) {
-  return request<API.LoginResult>('/api/login/account', {
+  return request<API.LoginResult>('/auth/login', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
