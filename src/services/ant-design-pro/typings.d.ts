@@ -24,6 +24,15 @@ declare namespace API {
     pageSize?: number;
   };
 
+  type PostItem = {
+    _id?: string;
+    title?: string;
+    description?: string;
+    owner?: CurrentUser;
+    createdAt?: string;
+    updatedAt?: string;
+  };
+
   type RuleListItem = {
     key?: number;
     disabled?: boolean;
