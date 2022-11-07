@@ -4,7 +4,7 @@ import request from '../config';
 
 /** get profile */
 export async function currentUser(options?: { [key: string]: any }) {
-  return request<API.CurrentUser>('/user/profile', {
+  return request<API.CurrentUser>('/auth/profile', {
     method: 'GET',
     ...(options || {}),
   });

@@ -6,36 +6,18 @@ import {
   updateItem,
 } from '@/services/ant-design-pro/common';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
-import { ProFormDateTimePicker } from '@ant-design/pro-components';
-import { ProFormDatePicker } from '@ant-design/pro-components';
-import { ProFormTextArea } from '@ant-design/pro-components';
-import { ProFormText } from '@ant-design/pro-components';
 import { ModalForm } from '@ant-design/pro-components';
-import { PageContainer } from '@ant-design/pro-components';
 import { ProTable } from '@ant-design/pro-components';
 import { Button, message, Space } from 'antd';
-import type { Rule } from 'antd/lib/form';
 import type { ReactNode } from 'react';
 import React from 'react';
-
-interface Item {
-  title: string;
-  dataIndex: string;
-  valueType?: any;
-  valueEnum?: any;
-  render?: any;
-  hideInSearch?: boolean;
-  hideInTable?: boolean;
-  useForm?: boolean;
-  typeComponent?: string | ReactNode;
-  rules?: Rule[];
-}
 
 interface Props {
   base: string;
   title: string;
-  pageSize?: number;
-  renderPro: Item[];
+  columns: ProColumns<any>[];
+  components?: any;
+  child?: ReactNode;
 }
 
 const getList = async (
@@ -122,8 +104,10 @@ const handleDelete = async (base: string, id: string, values: any) => {
   }
 };
 
-export default function CommonPage(props: Props) {
-  const { base, title, pageSize, renderPro } = props;
+export default function Test(props: Props) {
+  const { base, title, columns, components, child } = props;
+
+  console.log(child);
 
   const [id, setID] = React.useState<string>('');
   const [add, setAdd] = React.useState<boolean>(false);
@@ -131,69 +115,8 @@ export default function CommonPage(props: Props) {
   const [remove, setRemove] = React.useState<boolean>(false);
   const actionRef = React.useRef<ActionType>();
 
-  const columns: ProColumns<any>[] = renderPro.map((e: Item) => {
-    const { useForm, typeComponent, rules, valueType, hideInSearch, ...data } = e as any;
-    return { ...data, hideInSearch: hideInSearch ?? true, valueType: valueType ?? 'text' };
-  });
-
-  const fields = renderPro.map((e: Item, i: number) => {
-    const item = Object.assign(
-      {
-        useForm: true,
-        typeComponent: 'text',
-      },
-      e,
-    );
-
-    if (!item.useForm) return null;
-
-    if (typeof item.typeComponent !== 'string') {
-      return item.typeComponent;
-    }
-
-    if (item.typeComponent === 'textarea') {
-      return (
-        <ProFormTextArea
-          key={i}
-          rules={item.rules}
-          width="md"
-          name={item.dataIndex}
-          label={item.title}
-        />
-      );
-    }
-
-    if (item.typeComponent === 'date') {
-      return (
-        <ProFormDatePicker
-          key={i}
-          rules={item.rules}
-          width="md"
-          name={item.dataIndex}
-          label={item.title}
-        />
-      );
-    }
-
-    if (item.typeComponent === 'datetime') {
-      return (
-        <ProFormDateTimePicker
-          key={i}
-          rules={item.rules}
-          width="md"
-          name={item.dataIndex}
-          label={item.title}
-        />
-      );
-    }
-
-    return (
-      <ProFormText key={i} rules={item.rules} width="md" name={item.dataIndex} label={item.title} />
-    );
-  });
-
   return (
-    <PageContainer>
+    <>
       <ProTable<any, any>
         headerTitle={title}
         actionRef={actionRef}
@@ -206,8 +129,9 @@ export default function CommonPage(props: Props) {
         request={(params) => {
           return getList(base, params);
         }}
+        expandedRowRender={() => child}
         pagination={{
-          pageSize: pageSize ?? 5,
+          pageSize: 5,
         }}
         columns={[
           ...columns,
@@ -257,7 +181,7 @@ export default function CommonPage(props: Props) {
           }
         }}
       >
-        {fields}
+        abc
       </ModalForm>
 
       {/* update modal  */}
@@ -285,7 +209,7 @@ export default function CommonPage(props: Props) {
           }
         }}
       >
-        {fields}
+        abcd
       </ModalForm>
 
       {/* delete modal */}
@@ -311,6 +235,6 @@ export default function CommonPage(props: Props) {
       >
         Are you sure?
       </ModalForm>
-    </PageContainer>
+    </>
   );
 }

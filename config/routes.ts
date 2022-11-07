@@ -20,6 +20,12 @@
     component: './CommonList',
   },
   {
+    name: 'list.test-list',
+    icon: 'table',
+    path: '/test',
+    component: './TestPage',
+  },
+  {
     path: '/',
     redirect: '/common',
   },

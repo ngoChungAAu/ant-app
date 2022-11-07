@@ -1,11 +1,15 @@
 import request from '../config';
 
 /** posts */
-export async function getItems(base: string, options?: Record<string, any>) {
-  return request<{ items: any }>(`/${base}`, {
-    method: 'GET',
-    ...(options || {}),
-  });
+export async function getItems(base: string, params: any, options?: Record<string, any>) {
+  return request<{ items: any; totalItems?: number; totalPages?: number; currentPage?: number }>(
+    `/${base}`,
+    {
+      method: 'GET',
+      params,
+      ...(options || {}),
+    },
+  );
 }
 
 /** get post */
